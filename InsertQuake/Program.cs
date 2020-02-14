@@ -40,7 +40,7 @@ namespace InsertQuake
             var linha = "";
             int id = 0;
             int posicao;
-            string[] linhas;
+            
 
 
 
