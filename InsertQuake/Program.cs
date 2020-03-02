@@ -52,9 +52,9 @@ namespace InsertQuake
                 }
 
                 //MORTES
-                while ((linha = file.ReadLine()) != null && linha.Contains("Kill"))
+                while ((linha = file.ReadLine()) != null && linha.Contains("Kill: "))
                 {
-                    Regex rx = new Regex(@"\d+\:\d+\sKill:\s\d+\s\d+\s(\d+)\:\s(\w+)\s\w+\s(\w+)\sby\s\w+");
+                    Regex rx = new Regex(@"\d+\:\d+\s\w+\:\s\d+\s\d+\s(\d+)\:\s(\w+)\s\w+\s(\w+)\s\w+\s(\w+)");
 
                     MatchCollection matches = rx.Matches(linha);
                    
@@ -69,10 +69,10 @@ namespace InsertQuake
                     }
                 }
 
-                //MUNDO
+                ////MUNDO
                 while ((linha = file.ReadLine()) != null && linha.Contains("<world>"))
                 {
-                    Regex rx = new Regex(@"\d+\:\d+\s\w+\:\s\d+\s\d+\s\d+\:\s\<(\w+)\>\s\w+\s(\w+)\s\w+\s(\w+)");
+                    Regex rx = new Regex(@"\d+\:\d+\s\w+\:\s\d+\s\d+\s(\d+)\:\s\<(\w+)\>\s\w+\s(\w+)\s\w+\s(\w+)");
 
                     MatchCollection matches = rx.Matches(linha);
 
@@ -80,9 +80,9 @@ namespace InsertQuake
                     {
                         GroupCollection groups = match.Groups;
                         Console.WriteLine("INSERT INTO BS_007_MORTES2 (CLIENTE_MATOU, CLIENTE_MORTO, ID_ARMA, ID_PARTIDA) VALUES ('{0}', '{1}', '{2}', '{3}');",
-                                          groups[1].Value,
                                           groups[2].Value,
                                           groups[3].Value,
+                                          groups[1].Value,
                                             partida);
                     }
                 }
@@ -91,48 +91,48 @@ namespace InsertQuake
                 //cliente
 
 
-                while ((linha = file.ReadLine()) != null && linha.Contains("ClientUserinfoChanged"))
-                {
+                //while ((linha = file.ReadLine()) != null && linha.Contains("ClientUserinfoChanged"))
+                //{
 
-                    //20:34 ClientUserinfoChanged: 2 n\Isgalamido\t\0\model\xian/default\hmodel\xian/default\g_redteam\\g_blueteam\\c1\4\c2\5\hc\100\w\0\l\0\tt\0\tl\0
-                    Regex rx = new Regex(@".*ClientUserinfoChanged:\s(\d+)\s\w\\(\w+)\\\w\\\w\\\w+\\(\w+)");
+                //    //20:34 ClientUserinfoChanged: 2 n\Isgalamido\t\0\model\xian/default\hmodel\xian/default\g_redteam\\g_blueteam\\c1\4\c2\5\hc\100\w\0\l\0\tt\0\tl\0
+                //    Regex rx = new Regex(@".*ClientUserinfoChanged:\s(\d+)\s\w\\(\w+)\\\w\\\w\\\w+\\(\w+)");
 
-                    MatchCollection matches = rx.Matches(linha);
+                //    MatchCollection matches = rx.Matches(linha);
 
-                    foreach (Match match in matches)
-                    {
+                //    foreach (Match match in matches)
+                //    {
 
-                        GroupCollection groups = match.Groups;
-                        NickName1 = groups[2].Value;
-                        Idposicao2 = groups[1].Value;
+                //        GroupCollection groups = match.Groups;
+                //        NickName1 = groups[2].Value;
+                //        Idposicao2 = groups[1].Value;
 
-                        if (NickName1 != NickName)
-                        {
-                            Console.WriteLine("INSERT INTO BS_003_CLIENTE (ID_POSICAO, NICKNAME, PERSONAGEM, PARTIDA ) VALUES ('{0}', '{1}', '{2}', {3});",
-                                             groups[1].Value,
-                                             groups[2].Value,
-                                             groups[3].Value,
-                                             partida);
-                            NickName = groups[2].Value;
-                            Idposicao = groups[1].Value;
+                //        if (NickName1 != NickName)
+                //        {
+                //            Console.WriteLine("INSERT INTO BS_003_CLIENTE (ID_POSICAO, NICKNAME, PERSONAGEM, PARTIDA ) VALUES ('{0}', '{1}', '{2}', {3});",
+                //                             groups[1].Value,
+                //                             groups[2].Value,
+                //                             groups[3].Value,
+                //                             partida);
+                //            NickName = groups[2].Value;
+                //            Idposicao = groups[1].Value;
 
-                        }
-                        else
-                        {
-                            Console.WriteLine("ALTER TABLE INTO BS_003_CLIENTE (ID_POSICAO, NICKNAME, PERSONAGEM, PARTIDA ) VALUES ('{0}', '{1}', '{2}', {3});",
-                                             groups[1].Value,
-                                             groups[2].Value,
-                                             groups[3].Value,
-                                             partida);
-                            NickName = groups[2].Value;
-                            Idposicao = groups[1].Value;
+                //        }
+                //        else
+                //        {
+                //            Console.WriteLine("ALTER TABLE INTO BS_003_CLIENTE (ID_POSICAO, NICKNAME, PERSONAGEM, PARTIDA ) VALUES ('{0}', '{1}', '{2}', {3});",
+                //                             groups[1].Value,
+                //                             groups[2].Value,
+                //                             groups[3].Value,
+                //                             partida);
+                //            NickName = groups[2].Value;
+                //            Idposicao = groups[1].Value;
 
-                        }
+                //        }
 
-                    }
+                //    }
 
 
-                }
+                //}
 
 
 
