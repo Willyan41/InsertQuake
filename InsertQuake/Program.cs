@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 
 namespace InsertQuake
@@ -8,29 +9,29 @@ namespace InsertQuake
     class Program
     {
 
-        //static void Main(string[] args)
-        //{
+        //        static void Main(string[] args)
+        //        {
 
-        //    var linha = "";
+        //            var linha = "";
 
-        //    System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\willy\Desktop\teste\Armas.txt");
+        //            System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\Bombinha\Desktop\Teste\Armas.txt");
 
-        //    while ((linha = file.ReadLine()) != null)
-        //    {
+        //            while ((linha = file.ReadLine()) != null)
+        //            {
 
-        //        var armas = linha.Split(';');
-        //        var insert = $"INSERT INTO BS_002_ARMAS (NOME_ARMA) VALUES ('{armas[0]}');";
+        //                var armas = linha.Split(';');
+        //                var insert = $"INSERT INTO BS_001_ARMAS (NOME_ARMA) VALUES ('{armas[0]}');";
 
-        //        Console.WriteLine(insert);
+        //                Console.WriteLine(insert);
 
+        //            }
+
+        //            file.Close();
+        //            Console.ReadLine();
+
+
+        //        }
         //    }
-
-        //    file.Close();
-        //    Console.ReadLine();
-
-
-        //}
-        //}
         //}
 
         static void Main(string[] args)
@@ -40,11 +41,12 @@ namespace InsertQuake
             var linha = "";
             int id = 0;
             int posicao;
-            
+            var NickName = "";
+            var NickName1 = "";
+            var Idposicao = "";
+            var Idposicao2 = "";
 
-
-
-            System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\willy\Desktop\teste\LogQuake.txt");
+            System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\Bombinha\Desktop\Teste\LogQuake.txt");
 
             while ((linha = file.ReadLine()) != null)
             {
@@ -62,8 +64,8 @@ namespace InsertQuake
 
                         GroupCollection groups = match.Groups;
                         int teste = 1 + (int.Parse(groups[1].Value));
-                        Console.WriteLine("INSERT INTO BS_004_PARTIDA (TIPO) VALUES ('{0}'); ",
-                                          (int.Parse(groups[1].Value) + 1));
+                        //Console.WriteLine("INSERT INTO BS_004_PARTIDA (TIPO) VALUES ('{0}'); ",
+                        //                  (int.Parse(groups[1].Value) + 1));
 
                     }
 
@@ -77,7 +79,7 @@ namespace InsertQuake
                 //MORTES
                 while ((linha = file.ReadLine()) != null && linha.Contains("Kill"))
                 {
-                    Regex rx = new Regex(@"\d+\:\d+ Kill: (\d+) (\d+) (\d+)");
+                    Regex rx = new Regex(@"\d+\:\d+\sKill:\s\d+\s\d+\s(\d+)\:\s(\w+)\s\w+\s(\w+)\sby\s\w+");
 
                     MatchCollection matches = rx.Matches(linha);
 
@@ -85,10 +87,10 @@ namespace InsertQuake
                     foreach (Match match in matches)
                     {
                         GroupCollection groups = match.Groups;
-                        Console.WriteLine("INSERT INTO BS_006_MORTES (ID_CLIENTE_MATOU, ID_CLIENTE_MORTO, ID_ARMA, ID_PARTIDA) VALUES ('{0}', '{1}', '{2}', '{3}');",
-                                          groups[1].Value,
+                        Console.WriteLine("INSERT INTO BS_007_MORTES2 (CLIENTE_MATOU, CLIENTE_MORTO, ID_ARMA, ID_PARTIDA) VALUES ('{0}', '{1}', '{2}', '{3}');",
                                           groups[2].Value,
                                           groups[3].Value,
+                                          groups[1].Value,
                                             partida);
                     }
                 }
@@ -106,25 +108,48 @@ namespace InsertQuake
                     MatchCollection matches = rx.Matches(linha);
 
 
+
                     foreach (Match match in matches)
                     {
+
                         GroupCollection groups = match.Groups;
-                        Console.WriteLine("INSERT INTO BS_001_CLIENTE (ID_POSICAO, NICKNAME, PERSONAGEM ) VALUES ('{0}', '{1}', '{2}');",
-                                          groups[1].Value,
-                                          groups[2].Value,
-                                          groups[3].Value,
-                                          partida);
+                        NickName1 = groups[2].Value;
+                        Idposicao2 = groups[1].Value;
+
+                        if (NickName1 != NickName)
+                        {
+                            Console.WriteLine("INSERT INTO BS_003_CLIENTE (ID_POSICAO, NICKNAME, PERSONAGEM, PARTIDA ) VALUES ('{0}', '{1}', '{2}', {3});",
+                                             groups[1].Value,
+                                             groups[2].Value,
+                                             groups[3].Value,
+                                             partida);
+                            NickName = groups[2].Value;
+                            Idposicao = groups[1].Value;
+
+                        }
+                        //        //else
+                        //        //{
+                        //        //    Console.WriteLine("ALTER TABLE INTO BS_003_CLIENTE (ID_POSICAO, NICKNAME, PERSONAGEM, PARTIDA ) VALUES ('{0}', '{1}', '{2}', {3});",
+                        //        //                     groups[1].Value,
+                        //        //                     groups[2].Value,
+                        //        //                     groups[3].Value,
+                        //        //                     partida);
+                        //        //    NickName = groups[2].Value;
+                        //        //    Idposicao = groups[1].Value;
+
+                        //        //}
+
+                        //    }
+
+
                     }
 
-
-
                 }
+                file.Close();
+                Console.ReadLine();
+
 
             }
-            file.Close();
-            Console.ReadLine();
-
-
         }
     }
 }
