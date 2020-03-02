@@ -9,31 +9,6 @@ namespace InsertQuake
     class Program
     {
 
-        //        static void Main(string[] args)
-        //        {
-
-        //            var linha = "";
-
-        //            System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\Bombinha\Desktop\Teste\Armas.txt");
-
-        //            while ((linha = file.ReadLine()) != null)
-        //            {
-
-        //                var armas = linha.Split(';');
-        //                var insert = $"INSERT INTO BS_001_ARMAS (NOME_ARMA) VALUES ('{armas[0]}');";
-
-        //                Console.WriteLine(insert);
-
-        //            }
-
-        //            file.Close();
-        //            Console.ReadLine();
-
-
-        //        }
-        //    }
-        //}
-
         static void Main(string[] args)
         {
             int partida = 0;
@@ -64,8 +39,8 @@ namespace InsertQuake
 
                         GroupCollection groups = match.Groups;
                         int teste = 1 + (int.Parse(groups[1].Value));
-                        //Console.WriteLine("INSERT INTO BS_004_PARTIDA (TIPO) VALUES ('{0}'); ",
-                        //                  (int.Parse(groups[1].Value) + 1));
+                        Console.WriteLine("INSERT INTO BS_004_PARTIDA (TIPO) VALUES ('{0}'); ",
+                                          (int.Parse(groups[1].Value) + 1));
 
                     }
 
@@ -82,8 +57,7 @@ namespace InsertQuake
                     Regex rx = new Regex(@"\d+\:\d+\sKill:\s\d+\s\d+\s(\d+)\:\s(\w+)\s\w+\s(\w+)\sby\s\w+");
 
                     MatchCollection matches = rx.Matches(linha);
-
-
+                   
                     foreach (Match match in matches)
                     {
                         GroupCollection groups = match.Groups;
@@ -91,6 +65,24 @@ namespace InsertQuake
                                           groups[2].Value,
                                           groups[3].Value,
                                           groups[1].Value,
+                                            partida);
+                    }
+                }
+
+                //MUNDO
+                while ((linha = file.ReadLine()) != null && linha.Contains("<world>"))
+                {
+                    Regex rx = new Regex(@"\d+\:\d+\s\w+\:\s\d+\s\d+\s\d+\:\s\<(\w+)\>\s\w+\s(\w+)\s\w+\s(\w+)");
+
+                    MatchCollection matches = rx.Matches(linha);
+
+                    foreach (Match match in matches)
+                    {
+                        GroupCollection groups = match.Groups;
+                        Console.WriteLine("INSERT INTO BS_007_MORTES2 (CLIENTE_MATOU, CLIENTE_MORTO, ID_ARMA, ID_PARTIDA) VALUES ('{0}', '{1}', '{2}', '{3}');",
+                                          groups[1].Value,
+                                          groups[2].Value,
+                                          groups[3].Value,
                                             partida);
                     }
                 }
@@ -106,8 +98,6 @@ namespace InsertQuake
                     Regex rx = new Regex(@".*ClientUserinfoChanged:\s(\d+)\s\w\\(\w+)\\\w\\\w\\\w+\\(\w+)");
 
                     MatchCollection matches = rx.Matches(linha);
-
-
 
                     foreach (Match match in matches)
                     {
@@ -127,29 +117,29 @@ namespace InsertQuake
                             Idposicao = groups[1].Value;
 
                         }
-                        //        //else
-                        //        //{
-                        //        //    Console.WriteLine("ALTER TABLE INTO BS_003_CLIENTE (ID_POSICAO, NICKNAME, PERSONAGEM, PARTIDA ) VALUES ('{0}', '{1}', '{2}', {3});",
-                        //        //                     groups[1].Value,
-                        //        //                     groups[2].Value,
-                        //        //                     groups[3].Value,
-                        //        //                     partida);
-                        //        //    NickName = groups[2].Value;
-                        //        //    Idposicao = groups[1].Value;
+                        else
+                        {
+                            Console.WriteLine("ALTER TABLE INTO BS_003_CLIENTE (ID_POSICAO, NICKNAME, PERSONAGEM, PARTIDA ) VALUES ('{0}', '{1}', '{2}', {3});",
+                                             groups[1].Value,
+                                             groups[2].Value,
+                                             groups[3].Value,
+                                             partida);
+                            NickName = groups[2].Value;
+                            Idposicao = groups[1].Value;
 
-                        //        //}
-
-                        //    }
-
+                        }
 
                     }
 
+
                 }
-                file.Close();
-                Console.ReadLine();
+
 
 
             }
+
+            file.Close();
+            Console.ReadLine();
         }
     }
 }
