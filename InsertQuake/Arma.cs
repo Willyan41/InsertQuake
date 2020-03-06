@@ -4,14 +4,14 @@ using System.Text;
 
 namespace InsertQuake
 {
-    class Arma
+    public class Arma
     {
         //static void Main(string[] args)
         //{
 
         //    var linha = "";
 
-        //    System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\Bombinha\Desktop\Teste\Armas.txt");
+        //    System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\willy\Desktop\Teste\Arma.txt");
 
         //    while ((linha = file.ReadLine()) != null)
         //    {
