@@ -28,7 +28,7 @@ namespace InsertQuake
             while ((linha = file.ReadLine()) != null)
             {
                 //tipo partida +numero partida
-                if ( linha.Contains("InitGame"))
+                if (linha.Contains("InitGame"))
                 {
 
                     //0:00 InitGame: \sv_floodProtect\1\sv_maxPing\0\sv_minPing\0\sv_maxRate\10000\sv_minRate\0\sv_hostname\Code Miner Server\g_gametype\0\sv_privateClients\2\sv_maxclients\16\sv_allowDownload\0\dmflags\0\fraglimit\20\timelimit\15\g_maxGameClients\0\capturelimit\8\version\ioq3 1.36 linux - x86_64 Apr 12 2009\protocol\68\mapname\q3dm17\gamename\baseq3\g_needpass\0
@@ -41,8 +41,10 @@ namespace InsertQuake
 
                         GroupCollection groups = match.Groups;
                         int teste = 1 + (int.Parse(groups[1].Value));
-                        Console.WriteLine("INSERT INTO BS_004_PARTIDA (TIPO) VALUES ('{0}'); ",
-                                          (int.Parse(groups[1].Value) + 1));
+                        Console.WriteLine("INSERT INTO BS_004_PARTIDA (TIPO, N_PARTIDA) VALUES ('{0}', '{1}'); ",
+                                          (int.Parse(groups[1].Value)),
+                                          partida);
+
 
                     }
 
@@ -109,7 +111,7 @@ namespace InsertQuake
                         Idposicao1 = groups[1].Value;
                         Personagem1 = groups[2].Value;
 
-                        
+
                         if (NickName1 != NickName)
                         {
                             Console.WriteLine("INSERT INTO BS_003_CLIENTE (ID_POSICAO, NICKNAME, PERSONAGEM, PARTIDA ) VALUES ('{0}', '{1}', '{2}', {3});",
@@ -125,12 +127,12 @@ namespace InsertQuake
                         else
                         {
                             Console.WriteLine("UPDATE BS_003_CLIENTE SET (ID_POSICAO = '{0}', NICKNAME = '{1}', PERSONAGEM = '{2}') WHERE ('{3}', '{4}', '{5}', {6});",
-                                             Idposicao,
-                                             NickName,
-                                             Personagem,
                                              groups[1].Value,
                                              groups[2].Value,
                                              groups[3].Value,
+                                             Idposicao,
+                                             NickName,
+                                             Personagem,
                                              partida);
                             NickName = groups[2].Value;
                             Idposicao = groups[1].Value;
