@@ -19,7 +19,9 @@ namespace InsertQuake
             var NickName = "";
             var NickName1 = "";
             var Idposicao = "";
-            var Idposicao2 = "";
+            var Idposicao1 = "";
+            var Personagem = "";
+            var Personagem1 = "";
 
             System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\willy\Desktop\Teste\QuakeLog.txt");
 
@@ -61,7 +63,7 @@ namespace InsertQuake
                     foreach (Match match in matches)
                     {
                         GroupCollection groups = match.Groups;
-                        Console.WriteLine("INSERT INTO BS_007_MORTES2 (CLIENTE_MATOU, CLIENTE_MORTO, ID_ARMA, ID_PARTIDA) VALUES ('{0}', '{1}', '{2}', '{3}');",
+                        Console.WriteLine("INSERT INTO BS_005_MORTES (CLIENTE_MATOU, CLIENTE_MORTO, ID_ARMA, ID_PARTIDA) VALUES ('{0}', '{1}', '{2}', '{3}');",
                                           groups[2].Value,
                                           groups[3].Value,
                                           groups[1].Value,
@@ -79,7 +81,7 @@ namespace InsertQuake
                     foreach (Match match in matches)
                     {
                         GroupCollection groups = match.Groups;
-                        Console.WriteLine("INSERT INTO BS_007_MORTES2 (CLIENTE_MATOU, CLIENTE_MORTO, ID_ARMA, ID_PARTIDA) VALUES ('{0}', '{1}', '{2}', '{3}');",
+                        Console.WriteLine("INSERT INTO BS_005_MORTES (CLIENTE_MATOU, CLIENTE_MORTO, ID_ARMA, ID_PARTIDA) VALUES ('{0}', '{1}', '{2}', '{3}');",
                                           groups[2].Value,
                                           groups[3].Value,
                                           groups[1].Value,
@@ -104,8 +106,10 @@ namespace InsertQuake
 
                         GroupCollection groups = match.Groups;
                         NickName1 = groups[2].Value;
-                        Idposicao2 = groups[1].Value;
+                        Idposicao1 = groups[1].Value;
+                        Personagem1 = groups[2].Value;
 
+                        
                         if (NickName1 != NickName)
                         {
                             Console.WriteLine("INSERT INTO BS_003_CLIENTE (ID_POSICAO, NICKNAME, PERSONAGEM, PARTIDA ) VALUES ('{0}', '{1}', '{2}', {3});",
@@ -115,18 +119,22 @@ namespace InsertQuake
                                              partida);
                             NickName = groups[2].Value;
                             Idposicao = groups[1].Value;
+                            Personagem = groups[3].Value;
 
                         }
                         else
                         {
-                            Console.WriteLine("ALTER TABLE INTO BS_003_CLIENTE (ID_POSICAO, NICKNAME, PERSONAGEM, PARTIDA ) VALUES ('{0}', '{1}', '{2}', {3});",
+                            Console.WriteLine("UPDATE BS_003_CLIENTE SET (ID_POSICAO = '{0}', NICKNAME = '{1}', PERSONAGEM = '{2}') WHERE ('{3}', '{4}', '{5}', {6});",
+                                             Idposicao,
+                                             NickName,
+                                             Personagem,
                                              groups[1].Value,
                                              groups[2].Value,
                                              groups[3].Value,
                                              partida);
                             NickName = groups[2].Value;
                             Idposicao = groups[1].Value;
-
+                            Personagem = groups[3].Value;
                         }
 
                     }
